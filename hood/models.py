@@ -75,3 +75,57 @@ class Neighbourhood(models.Model):
     def update_neighborhood(self):
         name = self.name
         self.name = name
+
+class Business(models.Model):
+    name = models.CharField(max_length=100)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='owner')
+    email = models.EmailField(max_length=100)
+    description = models.TextField(blank=True)
+    neighbourhood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE, related_name='business')
+
+    def __str__(self):
+        return f'{self.name}Business'
+
+    def save_business(self):
+        self.save()
+
+    def create_business(self):
+            self.save()
+
+    def delete_business(self):
+        self.delete()
+
+    @classmethod
+    def find_business(cls,busid):
+        business = cls.objects.get(id = business_id)
+        return business
+
+    def update_business(self):
+        name = self.name
+        self.name = name
+
+class Post(models.Model):
+    CHOICES = (
+        ('1', 'Crimes and Safety'),
+        ('2', 'Health Emergency'),
+        ('3', 'Recommendations'),
+        ('4', 'Fire Breakouts'),
+        ('5', 'Lost and Found'),
+        ('6', 'Death'),
+        ('7', 'Event'),
+    )
+    category = models.CharField(max_length=120, choices=CHOICES)
+    title = models.CharField(max_length=100, null=True)
+    post = models.TextField()
+    date_posted = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_owner')
+    neighbourhood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE, related_name='neighbourhood_post')
+
+    def __str__(self):
+        return f'{self.title} Post'    
+    
+    def save_post(self):
+        self.save()
+
+    def delete_post(self):
+        self.delete()
