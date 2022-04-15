@@ -42,3 +42,28 @@ def new_profile(request):
         'p_form': p_form,
     }
     return render(request, 'profile/profile.html', context)
+
+def neighbourhoods(request):
+    all_hoods = Neighbourhood.objects.all()
+    all_hoods = all_hoods[::-1]
+    context = {
+        'all_hoods': all_hoods,
+    }
+    return render(request, 'neighbourhoods.html', context)
+
+@login_required(login_url='/accounts/login/')
+@csrf_protect
+def create_neighbourhood(request):
+    if request.method == 'POST':
+        form = NeighbourHoodForm(request.POST, request.FILES)
+        if form.is_valid():
+            neighbourhood = form.save(commit=False)
+            neighbourhood.admin = request.user
+            neighbourhood.save()
+            messages.success(
+                request, 'You have succesfully created a Neighbourhood.Now proceed and join the Neighbourhood')
+            return redirect('neighbourhood')
+    else:
+        form = NeighbourHoodForm()
+    return render(request, 'new_hood.html', {'form': form})
+    
