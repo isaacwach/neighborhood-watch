@@ -66,4 +66,48 @@ def create_neighbourhood(request):
     else:
         form = NeighbourHoodForm()
     return render(request, 'new_hood.html', {'form': form})
-    
+
+@login_required(login_url='/accounts/login/')
+@csrf_protect
+def single_neighbourhood(request, hood_id):
+    neighbourhood = Neighbourhood.objects.get(id=hood_id)
+    business = Business.objects.filter(neighbourhood=neighbourhood)
+    posts = Post.objects.filter(neighbourhood=neighbourhood)
+    posts = posts[::-1]
+    if request.method == 'POST':
+        form = BusinessForm(request.POST)
+        if form.is_valid():
+            b_form = form.save(commit=False)
+            b_form.neighbourhood = neighbourhood
+            b_form.user = request.user.profile
+            b_form.save()
+            return redirect('single-hood', neighbourhood.id)
+    else:
+        form = BusinessForm()
+    context = {
+        'neighbourhood': neighbourhood,
+        'business': business,
+        'form': form,
+        'posts': posts
+    }
+    return render(request, 'single_hood.html', context)
+
+@login_required(login_url='/accounts/login/')
+@csrf_protect
+def join_neighbourhood(request, id):
+    neighbourhood = get_object_or_404(Neighbourhood, id=id)
+    request.user.profile.neighbourhood = neighbourhood
+    request.user.profile.save()
+    messages.success(
+        request, 'Success! You have succesfully joined this Neighbourhood ')
+    return redirect('neighbourhood')
+
+@login_required(login_url='/accounts/login/')
+@csrf_protect
+def leave_neighbourhood(request, id):
+    neighbourhood = get_object_or_404(Neighbourhood, id=id)
+    request.user.profile.neighbourhood = None
+    request.user.profile.save()
+    messages.success(
+        request, 'Success! You have succesfully exited this Neighbourhood ')
+    return redirect('neighbourhood')
