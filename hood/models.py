@@ -4,6 +4,7 @@ from PIL import Image
 # from cloudinary.models import CloudinaryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -131,3 +132,9 @@ class Post(models.Model):
 
     def delete_post(self):
         self.delete()
+
+class photos(models.Model):
+    # title field
+    title = models.CharField(max_length=100)
+    #image field
+    image = CloudinaryField('image')
