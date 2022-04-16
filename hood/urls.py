@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns=[
     path('', views.index, name='index'),
-    path('new/profile/',views.new_profile, name='profile'),
+    path('new-profile/',views.new_profile, name='profile'),
     path('logout', views.logout, name='logout'),
     path('all-hoods/',views.neighbourhoods,name='neighbourhood'),
     path('new-hood/', views.create_neighbourhood, name='new-hood'),
