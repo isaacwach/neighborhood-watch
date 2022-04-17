@@ -11,7 +11,7 @@
 * Change My neighborhood when I decide to move out.
 * Only view details of a single neighborhood.
 ## Landing page
-![Landing page photo](https://github.com/isaacwach/neighborhood-watch/blob/master/static/photos/neighborhood.png)
+![Landing page photo](https://github.com/isaacwach/neighborhood-watch/blob/master/static/photos/landing.png)
 ## Author information
 I am a full stack developer, with impeccable skills in web development, UI design, and problem solving skills using algorithms. Besides, i have knowlege in enterprise development, financial accounting and business management.
 
